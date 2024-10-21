@@ -1,0 +1,30 @@
+.panel-grid {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: relative;
+
+  &-item {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+  }
+
+  $columns: 24;
+  @function fixed($float) {
+    @return calc(round($float * 1000) / 1000); // total 2+3 digits being %
+  }
+  &.gs-#{$columns} > .grid-stack-item {
+    width: fixed(calc(100% / $columns));
+    @for $i from 1 through $columns - 1 {
+      &[gs-x='#{$i}'] {
+        left: fixed(calc((100% / $columns) * $i));
+      }
+      &[gs-w='#{$i+1}'] {
+        width: fixed(calc((100% / $columns) * ($i + 1)));
+      }
+    }
+  }
+}
