@@ -15,7 +15,13 @@ export default defineConfig({
     emptyOutDir: true
   },
   plugins: [
-    vue(),
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag.startsWith('thy-clock') // 忽略报错提示
+        }
+      }
+    }),
     vueJsx(),
     VitePWA({
       base: '/',
@@ -71,5 +77,12 @@ export default defineConfig({
   },
   define: {
     __APP_VERSION__: JSON.stringify(appVersion)
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler' // 解决 The legacy JS API is deprecated 提示问题
+      }
+    }
   }
 });

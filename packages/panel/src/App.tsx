@@ -2,7 +2,7 @@ import { defineComponent } from 'vue';
 import PanelGrid from './components/panel-grid';
 import PanelBackground from './components/panel-bg';
 import PanelMenu from './components/panel-menu';
-
+import './App.scss';
 const App = defineComponent({
   name: 'App',
   setup() {
