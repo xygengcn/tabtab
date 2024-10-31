@@ -6,12 +6,32 @@ import { defineStore } from 'pinia';
  */
 export const useWidgetStore = defineStore('panel-store', {
   state: () => ({
-    store: [
-      { id: '111111', type: 'clock', properties: {}, w: 2, h: 2 },
-      { id: '222222', type: 'webside', properties: {}, w: 3, h: 2 },
-      { id: '22221222', type: 'webside', properties: {}, w: 2, h: 1 },
-      { id: '345', type: 'webside', properties: {}, w: 5, h: 1 },
-      { id: '2222', type: 'webside', properties: {}, w: 2, h: 2 }
+    storeWdigets: [
+      { id: '01', type: 'clock', properties: {}, w: 4, h: 4 },
+      {
+        id: '02',
+        type: 'webside-row',
+        properties: {
+          imgUrl: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/default-favicon.2eb36e10.png',
+          name: '稀土掘金',
+          url: 'https://baidu.com'
+        },
+        w: 5,
+        h: 2,
+        maxH: 2
+      },
+      {
+        id: '03',
+        type: 'webside-column',
+        noResize: true,
+        properties: {
+          imgUrl: 'https://lf-cdn-tos.bytescm.com/obj/static/xitu_extension/static/default-favicon.2eb36e10.png',
+          name: '稀土掘金',
+          url: 'https://baidu.com'
+        },
+        w: 3,
+        h: 3
+      }
     ] as IWidget[]
   }),
   actions: {}

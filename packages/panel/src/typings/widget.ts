@@ -12,8 +12,8 @@ export interface IWidget extends GridStackWidget {
 /**
  * 插件节点
  */
-export interface IWidgetNode extends GridStackNode {
+export interface IWidgetNode<T = Record<string, any>> extends GridStackNode {
   type: string;
   // 配置
-  properties: {};
+  properties: T;
 }

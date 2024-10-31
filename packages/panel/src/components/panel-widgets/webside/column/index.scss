@@ -1,0 +1,42 @@
+@import '@/styles';
+
+.widget-webside-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 8px 0px 5px 0px;
+  justify-content: center;
+  border-radius: 5%;
+  background-color: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  &-logo {
+    display: flex;
+    width: 50%;
+    height: max-content;
+    img {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+  &-name {
+    flex: 1;
+    margin-top: 4px;
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    @include line(1);
+  }
+}
+
+// 监听容器
+@container panel-widget (max-width: 70px) {
+  .widget-webside-column {
+    padding: 5px 0px;
+  }
+  .widget-webside-column-name {
+    font-size: 12px;
+  }
+}

@@ -1,7 +1,9 @@
 import PanelWidget from '@/components/panel-widgets';
 import { IWidget, IWidgetNode } from '@/typings/widget';
-import { GridItemHTMLElement, GridStack } from 'gridstack';
-import { h, ref, render, shallowRef } from 'vue';
+import { GridItemHTMLElement, GridStack, GridStackOptions } from 'gridstack';
+import { Component, h, ref, render, shallowRef } from 'vue';
+import './index.css';
+import './index.scss';
 
 export const defineGridStack = () => {
   const gridStack = shallowRef<GridStack>(null);
@@ -11,9 +13,11 @@ export const defineGridStack = () => {
    * 添加插件
    * @param widget
    */
-  const addWidget = (widget: IWidget) => {
-    widgetList.value.push(widget);
-    gridStack.value?.addWidget(widget);
+  const addWidget = (...widgets: IWidget[]) => {
+    widgetList.value.push(...widgets);
+    widgets.forEach((widget) => {
+      gridStack.value?.addWidget(widget);
+    });
   };
 
   /**
@@ -28,17 +32,17 @@ export const defineGridStack = () => {
    * 挂载
    * @param el
    */
-  const mount = (el: HTMLDivElement) => {
+  const mount = (el: HTMLDivElement, options: GridStackOptions = {}, contentNode: Component = PanelWidget) => {
     gridStack.value = GridStack.init(
       {
         float: true,
-        cellHeight: 'auto',
         minRow: 10,
+        cellHeight: '30px',
         columnOpts: {
-          columnWidth: 12,
-          columnMax: 24,
-          breakpointForWindow: true
-        }
+          columnWidth: 30,
+          columnMax: 64
+        },
+        ...options
       },
       el
     );
@@ -47,7 +51,7 @@ export const defineGridStack = () => {
       for (const item of items) {
         const itemEl = item.el;
         const itemElContent = itemEl.querySelector('.grid-stack-item-content');
-        const itemContentVNode = h(PanelWidget, {
+        const itemContentVNode = h(contentNode, {
           widget: item as IWidgetNode,
           onRemove: () => {
             gridStack.value.removeWidget(itemEl);
@@ -63,9 +67,6 @@ export const defineGridStack = () => {
         const itemElContent = itemEl.querySelector('.grid-stack-item-content');
         render(null, itemElContent);
       }
-    });
-    widgetList.value.forEach((widget) => {
-      gridStack.value.addWidget(widget);
     });
   };
 
@@ -104,3 +105,8 @@ export const useWidget = (widget: IWidgetNode) => {
 };
 
 export const usePanelGrid = defineGridStack();
+
+/**
+ * 插件库
+ */
+export const useStoreGrid = defineGridStack();

@@ -1,8 +1,27 @@
 .panel-widget {
   width: 100%;
   height: 100%;
-  border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(50px);
-  overflow: hidden;
+  overflow-x: unset;
+  overflow-y: unset;
+  position: relative;
+  i.add {
+    display: inline-block;
+    position: absolute;
+    z-index: 999;
+    top: -7px;
+    left: -7px;
+    width: 18px;
+    height: 18px;
+    background: url('@/assets/icon/add.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+  &-wrap{
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    container: panel-widget / inline-size;
+  }
 }

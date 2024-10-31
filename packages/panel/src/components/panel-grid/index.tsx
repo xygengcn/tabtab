@@ -1,6 +1,5 @@
 import { usePanelGrid } from '@/services/gridstack';
 import { defineComponent, onMounted, ref } from 'vue';
-import './gridstack.css';
 import './index.scss';
 
 /**

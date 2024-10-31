@@ -1,8 +1,7 @@
+import { useStoreGrid } from '@/services/gridstack';
 import { useWidgetStore } from '@/store/widgets';
-import { IWidgetNode } from '@/typings/widget';
 import vClickOutside from 'click-outside-vue3';
-import { GridStack } from 'gridstack';
-import { defineComponent, h, onMounted, ref, render, Transition } from 'vue';
+import { defineComponent, onMounted, ref, Transition } from 'vue';
 import PanelStoreItem from './item';
 /**
  * 插件库
@@ -14,42 +13,21 @@ const PanelStore = defineComponent({
   },
   emits: ['close'],
   setup(props, context) {
-    const store = useWidgetStore();
-    let grid: GridStack = null;
+    const widgetStore = useWidgetStore();
     const gridRef = ref<HTMLDivElement>(null);
+    const { mount, addWidget } = useStoreGrid();
     onMounted(() => {
-      grid = GridStack.init(
+      mount(
+        gridRef.value,
         {
-          float: true,
           removable: false,
           class: 'panel-store-grid',
-          itemClass: 'panel-store-grid-item',
-          columnOpts: {
-            columnWidth: 12,
-            columnMax: 12,
-            breakpointForWindow: true
-          }
+          itemClass: 'panel-store-grid-item'
         },
-        gridRef.value
+        PanelStoreItem
       );
-      grid.on('added', (event, items) => {
-        for (const item of items) {
-          const itemEl = item.el;
-          const itemElContent = itemEl.querySelector('.grid-stack-item-content');
-          const itemContentVNode = h(PanelStoreItem, {
-            widget: item as IWidgetNode,
-            onRemove: () => {
-              grid.removeWidget(itemEl);
-            }
-          });
-          render(itemContentVNode, itemElContent);
-        }
-      });
-      store.store.forEach((item) => {
-        grid.addWidget({ ...item, locked: true, noResize: true, noMove: true });
-      });
+      addWidget(...widgetStore.storeWdigets.map((i) => ({ ...i, noMove: true, noResize: true, locked: true })));
     });
-
     /**
      * 关闭
      */

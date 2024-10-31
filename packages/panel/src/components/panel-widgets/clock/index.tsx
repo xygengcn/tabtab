@@ -4,7 +4,7 @@ import 'thy-clock';
 import { defineComponent, onMounted, PropType, ref } from 'vue';
 import './index.scss';
 /**
- * 插件库
+ * 时钟插件
  */
 const ClockWidget = defineComponent({
   name: 'ClockWidget',
