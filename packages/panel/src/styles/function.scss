@@ -1,0 +1,55 @@
+// 一行缩略，多行缩略
+@mixin line($num) {
+  @if ($num==1) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  } @else {
+    -webkit-line-clamp: $num;
+    display: -webkit-box;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+  }
+}
+
+// 桌面端
+@mixin desktop() {
+  @media screen and (min-width: 600px) {
+    @content;
+  }
+}
+
+// 移动端
+@mixin mobile() {
+  @media screen and (max-width: 599px) {
+    @content;
+  }
+}
+
+// 商店样式
+@mixin widgetStore() {
+  @at-root {
+    .panel-store {
+      @content;
+    }
+  }
+}
+
+// root
+@mixin app() {
+  @at-root {
+    #app {
+      @content;
+    }
+  }
+}
+
+// 组件容器，大于这个值情况
+@mixin panelWidgetMax($width) {
+  @container panel-widget (min-width: $width) {
+    @content;
+  }
+}

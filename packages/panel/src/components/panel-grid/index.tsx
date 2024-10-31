@@ -13,7 +13,11 @@ const PanelGrid = defineComponent({
     onMounted(() => {
       mount(gridRef.value);
     });
-    return () => <div class="panel-grid grid-stack" ref={gridRef}></div>;
+    return () => (
+      <div class="panel-grid">
+        <div class="panel-grid-wrap" ref={gridRef}></div>
+      </div>
+    );
   }
 });
 

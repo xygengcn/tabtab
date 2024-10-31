@@ -1,4 +1,4 @@
-@import '@/styles';
+@import '@/styles/function';
 
 .widget-webside-row {
   display: flex;
@@ -9,14 +9,13 @@
   padding: 0px 10px;
   justify-content: center;
   border-radius: 5%;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--widget-webside-background-color);
   cursor: pointer;
   &-logo {
     height: 70%;
     img {
       height: 100%;
       object-fit: cover;
-      border-radius: 50%;
     }
   }
   &-name {
@@ -30,9 +29,8 @@
 }
 
 // 监听容器
-@container panel-widget (max-width: 120px){
-  .widget-webside-row-name{
+@container panel-widget (max-width: 120px) {
+  .widget-webside-row-name {
     font-size: 12px;
-    margin-left: 4px;
   }
 }

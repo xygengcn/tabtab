@@ -1,0 +1,61 @@
+@import '@/styles/function';
+
+.widget-webside-intro {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 0px 8px;
+  justify-content: center;
+  border-radius: 5%;
+  background-color: var(--widget-webside-background-color);
+  cursor: pointer;
+  overflow: hidden;
+  &-logo {
+    height: 80%;
+    max-height: 70px;
+    flex-shrink: 0;
+    img {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &-content {
+    flex: 1;
+    margin-left: 8px;
+    color: #fff;
+    overflow: hidden;
+
+    // 名字
+    span.name {
+      font-size: 1em;
+      @include line(1);
+    }
+
+    // 介绍
+    span.intro {
+      margin-top: 2px;
+      display: inline-block;
+      width: 100%;
+      font-size: 0.8em;
+      @include line(1);
+    }
+  }
+}
+@container panel-widget (min-width: 240px) {
+  .widget-webside-intro {
+    padding: 0px 10px;
+    &-logo {
+      height: 70%;
+    }
+    &-content {
+      span.name {
+        font-size: 1.2em;
+      }
+      span.intro {
+        font-size: 1em;
+      }
+    }
+  }
+}

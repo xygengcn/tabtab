@@ -1,12 +1,12 @@
 import { useWidget } from '@/services/gridstack';
-import { IWidgetNode } from '@/typings/widget';
+import { IWidgetConfig, IWidgetNode } from '@/typings/widget';
 import 'thy-clock';
 import { defineComponent, onMounted, PropType, ref } from 'vue';
 import './index.scss';
 /**
  * 时钟插件
  */
-const ClockWidget = defineComponent({
+const ClockWidgetComponent = defineComponent({
   name: 'ClockWidget',
   props: {
     widget: Object as PropType<IWidgetNode>
@@ -35,5 +35,22 @@ const ClockWidget = defineComponent({
     );
   }
 });
+
+/**
+ * 组件配置
+ */
+const ClockWidget: IWidgetConfig = {
+  type: 'clock',
+  component: ClockWidgetComponent,
+  default: {
+    id: 'clock-01',
+    type: 'clock',
+    properties: {},
+    w: 4,
+    h: 4,
+    minH: 4,
+    minW: 4
+  }
+};
 
 export default ClockWidget;

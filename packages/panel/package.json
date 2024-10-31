@@ -17,6 +17,7 @@
   "author": "xygengcn <<xygengcn@qq.com>>",
   "license": "ISC",
   "devDependencies": {
+    "@tabtab/icon": "workspace:*",
     "@vitejs/plugin-vue": "^5.1.4",
     "@vitejs/plugin-vue-jsx": "^4.0.1",
     "register-service-worker": "^1.7.2",

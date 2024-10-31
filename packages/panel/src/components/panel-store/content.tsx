@@ -1,5 +1,5 @@
 import { useStoreGrid } from '@/services/gridstack';
-import { useWidgetStore } from '@/store/widgets';
+import WidgetStore from '@/services/widget';
 import vClickOutside from 'click-outside-vue3';
 import { defineComponent, onMounted, ref, Transition } from 'vue';
 import PanelStoreItem from './item';
@@ -13,7 +13,6 @@ const PanelStore = defineComponent({
   },
   emits: ['close'],
   setup(props, context) {
-    const widgetStore = useWidgetStore();
     const gridRef = ref<HTMLDivElement>(null);
     const { mount, addWidget } = useStoreGrid();
     onMounted(() => {
@@ -26,7 +25,7 @@ const PanelStore = defineComponent({
         },
         PanelStoreItem
       );
-      addWidget(...widgetStore.storeWdigets.map((i) => ({ ...i, noMove: true, noResize: true, locked: true })));
+      addWidget(...WidgetStore.list().map((i) => ({ ...i, noMove: true, noResize: true, locked: true })));
     });
     /**
      * 关闭

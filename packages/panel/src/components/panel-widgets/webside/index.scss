@@ -1,0 +1,9 @@
+@import '@/styles/function';
+
+@include app() {
+  // 网站组件背景色
+  --widget-webside-background-color: var(--dark-widget-background-color);
+}
+@include widgetStore() {
+  --widget-webside-background-color: var(--light-widget-background-color);
+}

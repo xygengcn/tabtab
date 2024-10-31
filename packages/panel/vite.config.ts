@@ -18,7 +18,10 @@ export default defineConfig({
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: (tag) => tag.startsWith('thy-clock') // 忽略报错提示
+          isCustomElement: (tag) => {
+            console.log(1111, tag);
+            return tag.startsWith('thy-clock'); // 忽略报错提示
+          }
         }
       }
     }),
