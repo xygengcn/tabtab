@@ -9,12 +9,14 @@ const PanelGrid = defineComponent({
   name: 'PanelGrid',
   setup() {
     const gridRef = ref<HTMLDivElement>(null);
-    const { mount } = usePanelGrid();
+    const { mount, gridId } = usePanelGrid();
+
     onMounted(() => {
       mount(gridRef.value);
     });
+
     return () => (
-      <div class="panel-grid">
+      <div class="panel-grid" data-gridId={gridId}>
         <div class="panel-grid-wrap" ref={gridRef}></div>
       </div>
     );

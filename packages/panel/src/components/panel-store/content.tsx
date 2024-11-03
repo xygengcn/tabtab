@@ -1,8 +1,8 @@
 import { useStoreGrid } from '@/services/gridstack';
-import WidgetStore from '@/services/widget';
+import { WidgetStore } from '@/services/widget';
 import vClickOutside from 'click-outside-vue3';
 import { defineComponent, onMounted, ref, Transition } from 'vue';
-import PanelStoreItem from './item';
+import PanelStoreItem from './widget';
 /**
  * 插件库
  */
@@ -14,7 +14,7 @@ const PanelStore = defineComponent({
   emits: ['close'],
   setup(props, context) {
     const gridRef = ref<HTMLDivElement>(null);
-    const { mount, addWidget } = useStoreGrid();
+    const { mount, load, gridId } = useStoreGrid();
     onMounted(() => {
       mount(
         gridRef.value,
@@ -25,7 +25,7 @@ const PanelStore = defineComponent({
         },
         PanelStoreItem
       );
-      addWidget(...WidgetStore.list().map((i) => ({ ...i, noMove: true, noResize: true, locked: true })));
+      load(WidgetStore.list().map((i) => ({ ...i, noMove: true, noResize: true, locked: true })));
     });
     /**
      * 关闭
@@ -36,7 +36,7 @@ const PanelStore = defineComponent({
     };
     return () => (
       <Transition name="slide-fade">
-        <div class={{ 'panel-store': true }} v-clickOutside={handleClickoutside}>
+        <div class={{ 'panel-store': true }} v-clickOutside={handleClickoutside} data-gridId={gridId}>
           <div class="panel-store-list" ref={gridRef}></div>
         </div>
       </Transition>

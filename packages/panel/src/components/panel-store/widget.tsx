@@ -1,5 +1,5 @@
 import { usePanelGrid } from '@/services/gridstack';
-import WidgetStore from '@/services/widget';
+import { WidgetStore } from '@/services/widget';
 import { IWidgetNode } from '@/typings/widget';
 import { defineComponent, PropType } from 'vue';
 import PanelWidget from '../panel-widgets';
@@ -15,17 +15,15 @@ const PanelStoreItem = defineComponent({
   },
   setup(props) {
     const { addWidget } = usePanelGrid();
-    const handleClickAddWidget = (w: IWidgetNode, e: PointerEvent) => {
+    const handleClickAddWidget = (w: IWidgetNode) => {
       console.log('[panel-store] add', w);
       const widget = WidgetStore.find(props.widget.type);
       if (widget) {
         /**
          * 添加插件到面板
          */
-        addWidget({
-          id: `${props.widget.type}-${Date.now()}`,
-          ...widget.default
-        });
+        const newWidget = { id: `${props.widget.type}-${Date.now()}`, ...widget.default };
+        addWidget(newWidget);
       }
     };
     return () => (
@@ -33,6 +31,7 @@ const PanelStoreItem = defineComponent({
         <PanelWidget
           widget={props.widget}
           onAdd={handleClickAddWidget}
+          disabledContextMenu={true}
           visibleAdd={true}
           visibleDelete={false}
           preventDefault={true}

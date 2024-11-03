@@ -1,5 +1,5 @@
-import { useWidget } from '@/services/gridstack';
-import { IWidgetConfig, IWidgetNode } from '@/typings/widget';
+import { useWidget } from '@/services/widget/hook';
+import { IWidgetNode } from '@/typings/widget';
 import 'thy-clock';
 import { defineComponent, onMounted, PropType, ref } from 'vue';
 import './index.scss';
@@ -14,7 +14,7 @@ const ClockWidgetComponent = defineComponent({
   setup(props) {
     const clock = ref<HTMLDivElement>(null);
     const width = ref(0);
-    const { onResizeStop } = useWidget(props.widget);
+    const { onResizeStop } = useWidget();
     onResizeStop(() => {
       width.value = clock.value.clientWidth;
     });
@@ -36,21 +36,4 @@ const ClockWidgetComponent = defineComponent({
   }
 });
 
-/**
- * 组件配置
- */
-const ClockWidget: IWidgetConfig = {
-  type: 'clock',
-  component: ClockWidgetComponent,
-  default: {
-    id: 'clock-01',
-    type: 'clock',
-    properties: {},
-    w: 4,
-    h: 4,
-    minH: 4,
-    minW: 4
-  }
-};
-
-export default ClockWidget;
+export default ClockWidgetComponent;

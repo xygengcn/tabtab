@@ -24,3 +24,8 @@ ul {
   margin: 0;
   padding: 0;
 }
+
+// 禁止点击
+.prevent-default {
+  pointer-events: none;
+}

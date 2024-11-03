@@ -38,11 +38,6 @@
     position: relative;
     overflow: hidden;
     container: panel-widget / inline-size;
-
-    // 禁止点击
-    &.prevent-default {
-      pointer-events: none;
-    }
   }
   /* 桌面端 */
   @include desktop() {

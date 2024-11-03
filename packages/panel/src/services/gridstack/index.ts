@@ -1,20 +1,25 @@
 import PanelWidget from '@/components/panel-widgets';
 import { IWidget, IWidgetNode } from '@/typings/widget';
-import { GridItemHTMLElement, GridStack, GridStackOptions } from 'gridstack';
-import { Component, h, ref, render, shallowRef } from 'vue';
+import EventEmitter from 'eventemitter3';
+import { GridStack, GridStackNode, GridStackOptions } from 'gridstack';
+import { Component, h, onBeforeUnmount, render, shallowRef } from 'vue';
 import './index.css';
 import './index.scss';
 
-export const defineGridStack = () => {
+export const defineGridStack = (gridId: string) => {
   const gridStack = shallowRef<GridStack>(null);
-  const widgetList = ref<IWidget[]>([]);
+
+  /**
+   * 事件
+   */
+  const gridEvent = new EventEmitter();
 
   /**
    * 添加插件
    * @param widget
    */
   const addWidget = (...widgets: IWidget[]) => {
-    widgetList.value.push(...widgets);
+    gridEvent.emit('added', widgets);
     widgets.forEach((widget) => {
       gridStack.value?.addWidget(widget);
     });
@@ -25,7 +30,7 @@ export const defineGridStack = () => {
    * @returns
    */
   const widgets = (): IWidget[] => {
-    return gridStack.value.getGridItems() as any;
+    return gridStack.value.save(false) as IWidget[];
   };
 
   /**
@@ -62,51 +67,82 @@ export const defineGridStack = () => {
     });
     gridStack.value.on('removed', function (event, items) {
       console.log('[panel-grid] removed', event, items);
+      gridEvent.emit('removed', items);
       for (const item of items) {
         const itemEl = item.el;
         const itemElContent = itemEl.querySelector('.grid-stack-item-content');
         render(null, itemElContent);
       }
     });
+
+    gridStack.value.on('change', function (event, items) {
+      gridEvent.emit('change', items);
+    });
+
+    /**
+     * 放大监听
+     */
+    gridStack.value.on('resizestop', function (event, el) {
+      el.dispatchEvent(new CustomEvent('widget-resizestop', event));
+    });
+  };
+
+  /**
+   * 加载
+   * @param widgets
+   * @returns
+   */
+  const load = (widgets: IWidget[]) => {
+    return gridStack.value?.load(widgets, true);
+  };
+
+  /**
+   * 获取配置
+   * @returns
+   */
+  const config = () => {
+    return gridStack.value?.save(false);
   };
 
   return () => {
+    const onAdd = (cb: (nodes: GridStackNode[]) => void) => {
+      gridEvent.on('added', cb);
+      onBeforeUnmount(() => {
+        gridEvent.off('added', cb);
+      });
+    };
+
+    const onRemove = (cb: (nodes: GridStackNode[]) => void) => {
+      gridEvent.on('removed', cb);
+      onBeforeUnmount(() => {
+        gridEvent.off('removed', cb);
+      });
+    };
+
+    const onChange = (cb: (nodes: GridStackNode[]) => void) => {
+      gridEvent.on('change', cb);
+      onBeforeUnmount(() => {
+        gridEvent.off('removed', cb);
+      });
+    };
+
     return {
+      gridId,
+      load,
+      onAdd,
+      onRemove,
       addWidget,
+      onChange,
       mount,
-      widgets
+      widgets,
+      config
     };
   };
 };
 
-/**
- * 插件hook
- * @param widget
- * @returns
- */
-export const useWidget = (widget: IWidgetNode) => {
-  /**
-   *
-   * 监听变形结束
-   * @todo 需要移除监听
-   * @param callback
-   */
-  const onResizeStop = (callback: (el: GridItemHTMLElement) => void) => {
-    widget.grid.on('resizestop', (event: Event, el: GridItemHTMLElement) => {
-      if (el.gridstackNode?.id === widget.id) {
-        callback(el);
-      }
-    });
-  };
-
-  return {
-    onResizeStop
-  };
-};
-
-export const usePanelGrid = defineGridStack();
+export const usePanelGrid = defineGridStack('panel');
 
 /**
  * 插件库
  */
-export const useStoreGrid = defineGridStack();
+export const useStoreGrid = defineGridStack('store');

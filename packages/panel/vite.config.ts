@@ -5,6 +5,8 @@ import { fileURLToPath } from 'url';
 import { VitePWA } from 'vite-plugin-pwa';
 import manifestJson from './mainifest';
 import packageConfig from './package.json';
+import Components from 'unplugin-vue-components/vite';
+import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 
 const appVersion = packageConfig.version;
 
@@ -19,7 +21,6 @@ export default defineConfig({
       template: {
         compilerOptions: {
           isCustomElement: (tag) => {
-            console.log(1111, tag);
             return tag.startsWith('thy-clock'); // 忽略报错提示
           }
         }
@@ -61,6 +62,13 @@ export default defineConfig({
         ],
         globPatterns: ['**/*.{js,css,html,png,jpg,svg,json}', 'https://tabtab.xygeng.cn/**/*']
       }
+    }),
+    Components({
+      resolvers: [
+        AntDesignVueResolver({
+          importStyle: false // css in js
+        })
+      ]
     })
   ],
   resolve: {
