@@ -6,3 +6,5 @@ coverage
 *.local
 .env
 .history
+prisma
+data.db

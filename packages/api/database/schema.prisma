@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/database/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./data.db"
+}
+
+// 用户数据
+model TabtabUserCustom {
+  key    String @id // 属性
+  userId String // 用户id
+  value  String // 属性值
+
+  @@map("tabtab_user_custom")
+}
+
+// 面板数据
+model TabtabGrids {
+  // 面板id
+  id        Int             @id @default(autoincrement())
+  // 归属用户 
+  userId    String
+  // 面板名字
+  name      String
+  // 组件
+  widget    TabtabWidgets[]
+  // 创建时间
+  createdAt DateTime        @default(now())
+  // 更新时间
+  updatedAt DateTime?       @default(now()) @updatedAt
+
+  @@map("tabtab_grids")
+}
+
+// 组件列表
+model TabtabWidgets {
+  // 组件id
+  id          String       @id
+  // 归属面板id
+  gridId      Int
+  TabtabGrids TabtabGrids? @relation(fields: [gridId], references: [id])
+  // 组件属性
+  wdiget      String
+  // 创建时间
+  createdAt   DateTime     @default(now())
+  // 更新时间
+  updatedAt   DateTime?    @default(now()) @updatedAt
+
+  @@map("tabtab_widgets")
+}
